@@ -1,0 +1,220 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <!--4105056019 許睦昆 第二次作業 4/10-->
+    <!--參考至中興大學-校徽設計理念網站-->
+    <meta charset="utf-8" />
+    <title>校徽設計理念</title>
+    <style type="text/css">
+        @media all {
+            h1 {
+                color: cornflowerblue;
+                -webkit-text-stroke: 1px black;
+            }
+
+            img {
+                position: relative;
+                left: 50px;
+                top: -20px;
+                -webkit-box-reflect: right 5px -webkit-gradient(linear,left top,left bottom,from(transparent),to(white));
+                animation-name: logo;
+                -webkit-animation: logo linear 10s 1s 2 alternate;
+                animation: logo linear 10s 1s 2 alternate;
+                -webkit-animation-play-state: running;
+                animation-play-state: running;
+            }
+
+                img:active {
+                    -webkit-animation-play-state: paused;
+                }
+
+            @-webkit-keyframes logo {
+                0% {
+                    opacity: 0;
+                    left: 50px;
+                    top: -20px;
+                }
+
+                25% {
+                    opacity: 1;
+                    left: -50px;
+                    top: -20px;
+                }
+
+                50% {
+                    opacity: 0;
+                    left: -50px;
+                    top: 70px;
+                }
+
+                75% {
+                    opacity: 1;
+                    left: 50px;
+                    top: 70px;
+                }
+
+                100% {
+                    opacity: 0;
+                    left: 50px;
+                    top: -20px;
+                }
+            }
+
+            @keyframes logo {
+                0% {
+                    opacity: 0;
+                    left: 50px;
+                    top: -20px;
+                }
+
+                25% {
+                    opacity: 1;
+                    left: -50px;
+                    top: -20px;
+                }
+
+                50% {
+                    opacity: 0;
+                    left: -50px;
+                    top: 70px;
+                }
+
+                75% {
+                    opacity: 1;
+                    left: 50px;
+                    top: 70px;
+                }
+
+                100% {
+                    opacity: 0;
+                    left: 50px;
+                    top: -20px;
+                }
+            }
+        }
+
+        @media print {
+            h1 {
+                color: cornflowerblue;
+            }
+
+            #logo {
+                position: relative;
+                left: 200px;
+                top: -20px
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="首頁.html">首頁</a>
+    <a href="#意見">校徽意見回饋</a>
+    <h1 id="理念">校徽設計理念</h1>
+    <hr />
+    <h2>校徽圖案由來</h2>
+    <p>本校校徽圖案在民國六十一年春，公開徵求設計圖案，在五十多件應徵作品中選出一件，並經審查會議、行政會議、校務會議等程序審查通過後採用。</p>
+    <img src="圖片/校徽(中).jpg" width="400" alt="校徽" />
+    <table border="1">
+        <thead>
+            <tr>
+                <th>圖案形狀</th>
+                <th>圖案意義</th>
+                <th>顏色表徵</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <ol>
+                        <li>等邊三角形。</li>
+                        <li>中文校名「國立中興大學」由右至左排於上方，正體字，英譯校名 National Chung Hsing University 自左至右，排於下方成U字形。</li>
+                        <li>中央為六十齒輪之圓圈，內為「興大」兩字，藝術簡體。</li>
+                        <li>三邊，英譯校名、及「興大」兩字，均為銀白色，底部為白色，圓圈內為淺藍色，六十圓圈齒輪及中文校名為金黃色。</li>
+                    </ol>
+                </td>
+                <td>
+                    <ol>
+                        <li>正中六十齒圓圈象徵光芒四射，照耀寰宇；並象徵興大於中華民國建國六十年改制國立；又六十年為一甲子，表週而復始，億萬斯年。</li>
+                        <li>白底和銀白色象徵「樸」素，「誠」實、純潔。</li>
+                        <li>金黃色象徵「精」、「勤」，堅毅與光輝。</li>
+                        <li>圓圈內淺藍色，象徵智慧，如深水之色，「智者樂水」之意。</li>
+                    </ol>
+                </td>
+                <td>
+                    <ol>
+                        <li>以上各種顏色，意在表徵興大校訓：「誠、樸、精、勤」之義。</li>
+                    </ol>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <h3 id="意見">校徽意見回饋</h3>
+    <a href="#理念">校徽設計理念</a>
+    <form method="post" action="首頁.html">
+        <input type="hidden" name="recipient" value="Chung Hsing University" />
+        <p><label>姓名:<input type="text" size="3" maxlength="5" required autocomplete="on" /></label></p>
+        <p>性別:</p>
+        <p>
+            <input type="radio" id="M" name="sex" required />
+            <label for="M">男性</label>
+            <input type="radio" id="F" name="sex" />
+            <label for="F">女性</label>
+        </p>
+        <p>出生年月日:</p>
+        <p>
+            <input type="date" name="bir" required />
+        </p>
+        <p>學歷</p>
+        <p>
+            <input type="text" placeholder="select" list="bk" required />
+            <datalist id="bk">
+                <option value="幼稚園"></option>
+                <option value="國小"></option>
+                <option value="國中"></option>
+                <option value="高中/職"></option>
+                <option value="大學"></option>
+                <option value="研究所"></option>
+            </datalist>
+        </p>
+        <p>校徽整體感覺(可複選)</p>
+        <p>
+            <input type="checkbox" name="sat" id="P" />
+            <label for="P">圖案設計良好</label>
+            <input type="checkbox" name="sat" id="G" />
+            <label for="G">能感受到要傳達的理念</label>
+            <input type="checkbox" name="sat" id="Y" />
+            <label for="Y">顏色配色良好</label>
+        </p>
+        <p>滿意程度1~5(數字越大 代表越滿意)</p>
+        <p>
+            1<input type="range" value="3" min="1" max="5" />5
+        </p>
+        <p>若要設計新校徽，想以麼顏色為主</p>
+        <p>
+            顏色<input type="color" required />
+        </p>
+        <p>若你有任何關於設計校徽的網站</p>
+        請輸入:<input type="url" placeholder="http://" />
+        <p>其他意見</p>
+        <p>
+            <textarea name="opinion" cols="30" rows="5"></textarea>
+        </p>
+        <p>信箱:</p>
+        <p>
+            <input type="email" placeholder="123@gmail.com" required />
+        </p>
+        <p>電話</p>
+        <input type="tel" placeholder="(###)###-####" required />
+        <p>請輸入填完此問卷的時間</p>
+        <p>
+            UTC時間<input type="datetime" required />
+        </p>
+        <p>
+            當地時間<input type="datetime-local" required />
+        </p>
+        <input type="submit" value="提交" />
+        <input type="reset" value="重填" />
+
+    </form>
+</body>
+</html>

@@ -1,0 +1,373 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <!-- /***************************
+     4105056019 許睦昆 第四次作業5/4
+    ***************************/-->
+    <meta charset="utf-8" />
+    <title>HW04</title>
+    <style>
+        li{display:inline}
+        h1{font-family:'AR HERMANN';color:blue;text-align:center}
+        .button {
+            display:inline;
+            margin-left:50px;
+        }
+        .playbutton {
+            position: relative;
+            left: 45%;
+            background-image: url("圖片/playbutton.png");
+            background-position:center;
+            background-size:90px 45px;
+            width:80px;
+            height:40px
+        }
+        .playpic{
+            position: relative;
+            left: 38%;
+        }
+        div{display:none;}
+        .inline{
+            display:inline;
+        }
+        .block{
+            display:block;
+        }
+        .table{
+            position:relative;
+            margin-top:20px;
+            left:30%;
+            background-color:white;
+            color:blue;
+            border-color:black;
+        }
+        .tablewidth{
+            width:300px;
+        }
+        .gameoverbutton{display:none; position:absolute;left:48%;top:45%}
+        .gameovertitle {
+            position: absolute;
+            top: 10%;
+            left: 35%;
+            font-size:5em;
+        }
+        body{background-color:green;}
+    </style>
+    <script>
+        var cash=300;
+        var money = 0;
+        var premoney = 0;
+        var cardnumappear = new Array(14);
+        var colorindexappear = new Array(14);
+        var currntcardindex = 0;
+        var playerindex = 10;
+        var playernum;
+        var change = 0;
+        function disply() {
+            var title = document.getElementById("gametitle");
+            title.style.display = "none";
+            var playbutton = document.getElementById("playbutton");
+            playbutton.style.display = "none";
+            var pic = document.getElementById("playpic");
+            pic.style.display = "none";
+            document.getElementsByTagName("div")[0].style.display = "block";
+            document.getElementsByTagName("p")[0].innerHTML = "籌碼:" + cash;
+            document.getElementsByTagName("p")[1].innerHTML = "賭金:" + money;
+        }
+        function addcash() {
+            if (cash > 0) {
+                cash -= 50;
+                money += 50;
+                document.getElementsByTagName("p")[0].innerHTML = "籌碼:" + cash;
+                document.getElementsByTagName("p")[1].innerHTML = "賭金:" + money;
+            }
+            else 
+                window.alert("無法再壓注");
+        }
+        function enter() {
+            if (money - premoney == 0) {
+                window.alert("請記得壓注");
+                return;
+            }
+            premoney = money;
+            if (change == 0) {
+                change++;
+                playstart();
+            }
+            else if (change == 1) {
+                document.getElementById("cash").setAttribute("disabled", "disabled");
+                document.getElementById("ensure").disabled = true;
+                document.getElementById("add").disabled = false;
+                document.getElementById("no").disabled = true;
+                
+            }
+        }
+        function playstart() {
+            document.getElementById("cash").value = "加注(加牌需加注)";
+            document.getElementById("no").disabled = false;
+            var color = ["C", "D", "H", "S"];
+            var cardnum;
+            var colorindex;
+            var i = 0;
+            while ( i < 4) {
+                cardnum = Math.floor(1 + Math.random() * 13);
+                colorindex = Math.floor(Math.random() * 4);
+                if (i < 2) {
+                    var key = 0;
+                    key = checkrepeat(cardnum, colorindex);
+                    if (i == 0) 
+                        document.getElementsByTagName("img")[i + 1].src = "撲克牌/gray_back.png";
+                    if (key == 0 && i == 1) 
+                        document.getElementsByTagName("img")[i + 1].src = "撲克牌/" + cardnum + color[colorindex] + ".png";
+                    if (key == 0) {
+                        i++;
+                        currntcardindex++;
+                    }
+                }
+                else {
+                    var key = 0;
+                    key = checkrepeat(cardnum, colorindex);
+                    if (key == 0) {
+                        document.getElementsByTagName("img")[i + 6].src = "撲克牌/" + cardnum + color[colorindex] + ".png";
+                        i++;
+                        currntcardindex++;
+                    } 
+                }
+            }
+            printnum();
+        }
+        function checkrepeat(cardnum,colorindex)
+        {
+            var key = 0;
+            for (var j = 0; j < currntcardindex; j++) {
+                if (cardnum == cardnumappear[j] && colorindex == colorindexappear[j]) {
+                    key = 1;
+                    break;
+                }
+            }
+            if (key == 0) {
+                cardnumappear[currntcardindex] = cardnum;
+                colorindexappear[currntcardindex] = colorindex;
+            }
+            return key;
+        }
+        function addcard() {
+            var color = ["C", "D", "H", "S"];
+            var cardnum;
+            var colorindex;
+            var key = 2;
+            while (key != 0) {
+                cardnum = Math.floor(1 + Math.random() * 13);
+                colorindex = Math.floor(Math.random() * 4);
+                key = checkrepeat(cardnum, colorindex);
+                if (key == 0) {
+                    document.getElementsByTagName("img")[playerindex].src = "撲克牌/" + cardnum + color[colorindex] + ".png";
+                    currntcardindex++;
+                    playerindex++;
+                }
+            }
+            document.getElementById("cash").disabled = false;
+            document.getElementById("ensure").disabled = false;
+            document.getElementById("add").disabled = true;
+            document.getElementById("no").disabled = false;
+            printnum();
+        }
+        function printnum() {
+            var num = 0;
+            var ace = 0
+            for (var i = 2; i < currntcardindex; i++) {
+                if (cardnumappear[i] == 1) {
+                    ace++;
+                    num += 11;
+                }
+                else if (cardnumappear[i] > 10)
+                    num += 10;
+                else
+                    num += cardnumappear[i];
+            }
+            while (ace > 0 && num > 21) {
+                num -= 10;
+                ace--;
+                if (ace == 0 && num > 21)
+                    break;
+            }
+            document.getElementsByTagName("p")[2].innerHTML = "目前點數" + num;
+            playernum = num;
+            if (ace == 0 && num > 21) {
+                window.alert("you lose!!!");
+                document.getElementById("record").innerHTML += "<tr><td>"+(money+cash)+"</td><td>"+money+"</td><td>玩家點數:" + num + "超過21點</td>" + "<td>輸</td><td>"+cash+"</td></tr>";
+                clear();
+            }
+        }
+        var hostace = 0;
+        function noaddcard() {
+            var color = ["C", "D", "H", "S"];
+            var cardnum;
+            var colorindex;
+            document.getElementById("add").disabled = true;
+            document.getElementById("no").disabled = true;
+            document.getElementsByTagName("img")[1].src = "撲克牌/" + cardnumappear[0] + color[colorindexappear[0]] + ".png";
+            var hostindex = 3;
+            var num = countnum(0, 1, 0);
+            while (num < 17) {
+                document.getElementsByTagName("p")[3].innerHTML = "莊家目前點數" + num;
+                var key = 2;
+                while (key != 0) {
+                    cardnum = Math.floor(1 + Math.random() * 13);
+                    colorindex = Math.floor(Math.random() * 4);
+                    key = checkrepeat(cardnum, colorindex);
+                    if (key == 0) {
+                        document.getElementsByTagName("img")[hostindex].src = "撲克牌/" + cardnum + color[colorindex] + ".png";
+                        currntcardindex++;
+                        hostindex++;
+                    }
+                }
+                num = countnum(currntcardindex - 1, currntcardindex - 1, num);
+            }
+            document.getElementsByTagName("p")[3].innerHTML = "莊家目前點數" + num;
+            if (num > 21 || playernum > num) {
+                window.alert("you win");
+                if (playernum>num)
+                    document.getElementById("record").innerHTML += "<tr><td>" + (money + cash) + "</td><td>" + money + "</td><td>玩家點數:" + playernum + "大於莊家點數:" + num + "</td>" + "<td>贏</td><td>" + (cash+2*money) +"</td></tr>";
+                else
+                    document.getElementById("record").innerHTML += "<tr><td>" + (money + cash) + "</td><td>" + money + "</td><td>莊家點數:" + num + "大於21點</td>" + "<td>贏</td><td>" + (cash + 2 * money)  +"</td></tr>";
+                cash += 2 * money;
+                clear();
+            }
+            else if (playernum == num) {
+                window.alert("equal");
+                document.getElementById("record").innerHTML += "<tr><td>" + (money + cash) + "</td><td>" + money + "</td><td>玩家點數:" + playernum + "等於莊家點數:" + num + "</td>" + "<td>平手</td><td>" + (cash+money) +"</td></tr>";
+                cash += money;
+                clear();
+            }
+            else if (playernum < num) {
+                window.alert("you lose");
+                document.getElementById("record").innerHTML += "<tr><td>" + (money + cash) + "</td><td>" + money + "</td><td>玩家點數:" + playernum + "小於莊家點數:" + num + "</td>" + "<td>輸</td><td>" + cash +"</td></tr>";
+                clear();
+            }
+        }
+        function countnum(start, end, orinum) {
+            var num = 0;
+            num += orinum;
+            for (var i = start; i <=end; i++) {
+                if (cardnumappear[i] == 1) {
+                    hostace++;
+                    num += 11;
+                }
+                else if (cardnumappear[i] > 10)
+                    num += 10;
+                else
+                    num += cardnumappear[i];
+            }
+            while (hostace > 0 && num > 21) {
+                num -= 10;
+                hostace--;
+                if (hostace == 0 && num > 21)
+                    break;
+            }
+            return num;
+        }
+        function clear()
+        {
+            money = 0;
+            premoney = 0;
+            currntcardindex = 0;
+            playerindex = 10;
+            playernum = 0;
+            change = 0;
+            hostace = 0;
+            for (var i = 0; i < 14; i++) {
+                cardnumappear[i] = null;
+                colorindexappear[i] = null;
+                document.getElementsByTagName("img")[i+1].src = "撲克牌/blank-1.png";
+            }
+            document.getElementsByTagName("p")[0].innerHTML = "籌碼:" + cash;
+            document.getElementsByTagName("p")[1].innerHTML = "賭金:" + money;
+            document.getElementsByTagName("p")[2].innerHTML = "";
+            document.getElementsByTagName("p")[3].innerHTML = "";
+            document.getElementById("cash").disabled = false;
+            document.getElementById("ensure").disabled = false;
+            document.getElementById("add").disabled = true;
+            document.getElementById("no").disabled = true;
+            if (cash == 0) {
+                document.getElementById("gameovertitle").innerHTML = "GameOver";
+                document.getElementById("cash").disabled = true;
+                document.getElementById("ensure").disabled = true;
+                document.getElementById("gameover").style.display = "block";
+            }
+        }
+        function tryagain() {
+            document.getElementById("record").innerHTML = "";
+            document.getElementsByTagName("div")[0].style.display = "none";
+            var title = document.getElementById("gametitle");
+            title.style.display = "block";
+            var playbutton = document.getElementById("playbutton");
+            playbutton.style.display = "block";
+            var playbutton = document.getElementById("playpic");
+            playbutton.style.display = "block";
+            cash = 300;
+            document.getElementById("gameovertitle").innerHTML = "";
+            document.getElementById("gameover").style.display = "none";
+            document.getElementById("cash").disabled = false;
+            document.getElementById("ensure").disabled = false;
+        }
+    </script>
+</head>
+<body>
+    <h1 id="gametitle">Blackjack</h1>
+    <img src="撲克牌/honors_spade-14.png" height="150" class="playpic" id="playpic" />
+    <form action="#">
+        <input id="playbutton" type="button"  onclick="disply()" class="playbutton"/>
+    </form>
+    <ul>
+        <li><img src="撲克牌/blank-1.png" height="150" /></li>
+        <li><img src="撲克牌/blank-1.png" height="150" /></li>
+        <li><img src="撲克牌/blank-1.png" height="150" /></li>
+        <li><img src="撲克牌/blank-1.png" height="150" /></li>
+        <li><img src="撲克牌/blank-1.png" height="150" /></li>
+        <li><img src="撲克牌/blank-1.png" height="150" /></li>
+        <li><img src="撲克牌/blank-1.png" height="150" /></li>
+    </ul>
+    <ul>
+        <li><img src="撲克牌/blank-1.png" height="150" /></li>
+        <li><img src="撲克牌/blank-1.png" height="150" /></li>
+        <li><img src="撲克牌/blank-1.png" height="150" /></li>
+        <li><img src="撲克牌/blank-1.png" height="150" /></li>
+        <li><img src="撲克牌/blank-1.png" height="150" /></li>
+        <li><img src="撲克牌/blank-1.png" height="150" /></li>
+        <li><img src="撲克牌/blank-1.png" height="150" /></li>
+    </ul>
+    <div>
+        
+        <h1 id="gameovertitle" class="gameovertitle"></h1>
+        <form action="#" class="gameoverbutton" id="gameover">
+            <input  type="button" value="重新開始" onclick="tryagain()" />
+        </form>
+        <p></p>
+        <p class="inline"></p>
+        <p class="inline"></p>
+        <p class="inline"></p>
+        <div class="block">
+            <form action="#" class="button">
+                <input id="cash" type="button" value="下注50" onclick="addcash()" />
+            </form>
+            <form action="#" class="button">
+                <input id="ensure" type="button" value="確定" onclick="enter()" />
+            </form>
+            <form action="#" class="button">
+                <input id="add" type="button" value="加牌" disabled onclick="addcard()" />
+            </form>
+            <form action="#" class="button">
+                <input id="no" type="button" value="不加牌" disabled onclick="noaddcard()" />
+            </form>
+            <table border="1" class="table">
+                <caption>遊戲紀錄</caption>
+                <thead>
+                    <tr><th>籌碼</th><th>押注金額</th><th class="tablewidth">情形</th><th>結果</th><th>剩餘籌碼</th></tr>
+                </thead>
+                <tbody id="record"></tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <!--4105056019 許睦昆 第二次作業 4/10-->
+    <!--參考至中興大學網站的校區位置總配置圖(英文版)-->
+    <meta charset="utf-8" />
+    <title>campus map</title>
+    <link href='http://fonts.googleapis.com/css?family=Tangerine' rel='stylesheet' type='text/css' />
+    <style type="text/css">
+        h1 {
+            color: darkslategray;
+            text-align: center;
+            font-family: Tangerine;
+        }
+
+        #back {
+            position: absolute;
+            top: 150px;
+            left: 250px;
+            z-index: 1;
+        }
+
+        #forward {
+            position: absolute;
+            top: 150px;
+            left: 500px;
+            z-index: 2;
+        }
+
+        #chinese {
+            position: absolute;
+            left: 800px;
+        }
+    </style>
+</head>
+<body>
+    <a href="Home.html">Home</a>
+    <a href="校區配置圖(中).html" id="chinese">中文版</a>
+    <h1>Campus Map</h1>
+    <img src="圖片/map.jpg" height="500" id="back"/>
+    <img src="圖片/中興logo.png" height="125" id="forward"/>
+</body>
+</html>

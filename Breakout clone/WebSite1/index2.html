@@ -1,0 +1,394 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <!-- /***************************
+     4105056019 許睦昆 期末專題6/29
+    ***************************/-->
+    <meta charset="utf-8" />
+    <title>關卡2</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        canvas {
+            background-color: lightgray;
+            display: block;
+            margin: 0 auto;
+        }
+
+        #score {
+            color: red;
+        }
+
+        #life {
+            color: chartreuse;
+        }
+
+        .inline {
+            display: inline;
+        }
+
+        .position {
+            position: absolute;
+            left: 600px;
+            top: 200px;
+            display: none;
+        }
+
+        .position1 {
+            position: absolute;
+            left: 650px;
+            top: 200px;
+            display: none;
+        }
+
+        .h1pos1 {
+            position: absolute;
+            top: 420px;
+            left: 550px;
+            color: blueviolet;
+        }
+
+        .h1pos2 {
+            position: absolute;
+            top: 480px;
+            left: 550px;
+        }
+
+        body {
+            background-color: antiquewhite
+        }
+
+        .leavebutton {
+            position: absolute;
+            left: 730px;
+            top: 200px;
+            display: none;
+            background-image: url("圖片/leave.jpg");
+            background-position: center;
+            background-size: 90px 45px;
+            width: 80px;
+            height: 40px
+        }
+    </style>
+</head>
+<body>
+    <canvas width="600" height="400" id="canvas"></canvas>
+    <div class="inline">
+        <h1 id="score">目前分數:</h1>
+        <h1 id="life">生命:</h1>
+        <h1 id="timing">時間:60</h1>
+    </div>
+    <h1 class="h1pos1">提示:在60秒內消滅所有磚塊</h1>
+    <h1 class="h1pos2">左右方向鍵操控橫桿<br />空白鍵發球</h1>
+    <a href="index2.html"><img src="圖片/restart.png" width="80" height="40" class="position" id="restart" /></a>
+    <form action="update.php" method="post">
+        <input id="leave" type="submit" value="" class="leavebutton" />
+        <input  type="hidden" value="2" name="level" />
+    </form>
+    <a href="index3.html"><img src="圖片/nextbutton.png" width="100" height="50" class="position1" id="next" /></a>
+    <script>
+        var life = 2;
+        var score = 0;
+        var t = 60;
+        var canvas = document.getElementById('canvas');
+        var ctx = canvas.getContext("2d");
+        var ballradius = 12;
+        var ballx = 300;
+        var bally = 370;
+        var dx = 0;
+        var dy = 0;
+        var playerx = 240;
+        var playery = 380;
+        var playerwidth = 120;
+        var pressright = false;
+        var pressleft = false;
+        var bricks1 = [];
+        var bricks2 = [];
+        var mov = 0;
+        var brickwidth = 80;
+        var brickheight = 20;
+        var key = 0;
+        for (var i = 0; i < 4; i++) {
+            bricks1[i] = [];
+            for (var j = 0; j < 5; j++) {
+                if (i == 0 || i == 3 || j == 0 || j == 4)
+                    bricks1[i][j] = { x: 0, y: 0, count: 2 };
+                else
+                    bricks1[i][j] = { x: 0, y: 0, count: 0 };
+            }
+        }
+        for (var i = 0; i < 5; i++) {
+            bricks2[i] = [];
+            for (var j = 0; j < 4; j++) {
+                bricks2[i][j] = { x: 0, y: 0, count: 1 };
+            }
+        }
+        function level2scene1() {
+            for (var i = 0; i < 4; i++) {
+                for (var j = 0; j < 5; j++) {
+                    if (bricks1[i][j].count > 0) {
+                        var brickcolor;
+                        if (bricks1[i][j].count == 2)
+                            brickcolor = "orange";
+                        else if (bricks1[i][j].count == 1)
+                            brickcolor = "yellow";
+                        if (i == 0 || i == 3) {
+                            brickwidth = 110;
+                            brickheight = 20;
+                            bricks1[i][j].x = j * (80 + 40) + 5;//width=80 間距=40 兩邊差=60
+                            if (i == 0)
+                                bricks1[i][j].y = 20;
+                            else
+                                bricks1[i][j].y = i * (20 + 40) + 80//高 間 離最高點
+                        }
+                        else if (j == 0 || j == 4) {
+                            brickwidth = 20;
+                            brickheight = 90;
+                            if (i == 1) {
+                                bricks1[i][j].x = j * 140 + 10;//width=80 間距=40 兩邊差=60
+                                bricks1[i][j].y = i * (20 + 20) + 10;//高 間 離最高點
+                            }
+                            else if (i == 2) {
+                                bricks1[i][j].x = j * 140 + 10;//width=80 間距=40 兩邊差=60
+                                bricks1[i][j].y = 160;//高 間 離最高點
+                            }
+                        }
+                        ctx.beginPath();
+                        ctx.rect(bricks1[i][j].x, bricks1[i][j].y, brickwidth, brickheight);//(x座標,y座標,寬,高)
+                        ctx.fillStyle = brickcolor;
+                        ctx.fill();
+                        ctx.closePath();
+                    }
+                }
+            }
+        }
+        function level2scene2() {
+            for (var i = 0; i < 5; i++) {
+                for (var j = 0; j < 4; j++) {
+                    if (bricks2[i][j].count > 0) {
+                        brickwidth = 100;
+                        brickheight = 20;
+                        bricks2[i][j].x = j * (100 + 40) + 40;//width=80 間距=40 兩邊差=60
+                        bricks2[i][j].y = i * (20 + 20) + 60;//高 間 離最高點
+                        ctx.beginPath();
+                        ctx.rect(bricks2[i][j].x, bricks2[i][j].y, brickwidth, brickheight);//(x座標,y座標,寬,高)
+                        ctx.fillStyle = 'yellow';
+                        ctx.fill();
+                        ctx.closePath();
+                    }
+                }
+            }
+        }
+        function checkcollision1() {
+            for (var i = 0; i < 4; i++) {
+                for (var j = 0; j < 5; j++) {
+                    if (bricks1[i][j].count > 0) {
+                        if (i == 0 || i == 3) {
+                            if (dx > 0 && dy < 0) {
+                                if (ballx + dx >= bricks1[i][j].x - ballradius && ballx + dx <= bricks1[i][j].x + 110 - ballradius && bally + dy - ballradius >= bricks1[i][j].y && bally + dy <= bricks1[i][j].y + 20 + ballradius) {
+                                    dy = -dy;
+                                    countscore(i, j);
+                                }
+                            }
+                            else if (dx > 0 && dy > 0) {
+                                if (ballx + dx >= bricks1[i][j].x - ballradius && ballx + dx <= bricks1[i][j].x + 110 - ballradius && bally + dy + ballradius >= bricks1[i][j].y && bally + dy + ballradius <= bricks1[i][j].y + 20) {
+                                    dy = -dy;
+                                    countscore(i, j);
+                                }
+                            }
+                            else if (dx < 0 && dy < 0) {
+                                if (ballx + dx - ballradius >= bricks1[i][j].x && ballx + dx - ballradius <= bricks1[i][j].x + 110 && bally + dy - ballradius >= bricks1[i][j].y && bally + dy <= bricks1[i][j].y + 20 + ballradius) {
+                                    dy = -dy;
+                                    countscore(i, j);
+                                }
+                            }
+                            else if (dx < 0 && dy > 0) {
+                                if (ballx + dx - ballradius >= bricks1[i][j].x && ballx + dx - ballradius <= bricks1[i][j].x + 110 && bally + dy + ballradius >= bricks1[i][j].y && bally + dy + ballradius <= bricks1[i][j].y + 20) {
+                                    dy = -dy;
+                                    countscore(i, j);
+                                }
+                            }
+                        }
+                        else if (j == 0 || j == 4) {
+                            if (dx > 0 && dy < 0) {
+                                if (ballx + dx >= bricks1[i][j].x - ballradius && ballx + dx <= bricks1[i][j].x + 20 - ballradius && bally + dy - ballradius >= bricks1[i][j].y && bally + dy <= bricks1[i][j].y + 90 + ballradius) {
+                                    dx = -dx;
+                                    countscore(i, j);
+                                }
+                            }
+                            else if (dx > 0 && dy > 0) {
+                                if (ballx + dx >= bricks1[i][j].x - ballradius && ballx + dx <= bricks1[i][j].x + 20 - ballradius && bally + dy + ballradius >= bricks1[i][j].y && bally + dy + ballradius <= bricks1[i][j].y + 90) {
+                                    dx = -dx;
+                                    countscore(i, j);
+                                }
+                            }
+                            else if (dx < 0 && dy < 0) {
+                                if (ballx + dx - ballradius >= bricks1[i][j].x && ballx + dx - ballradius <= bricks1[i][j].x + 20 && bally + dy - ballradius >= bricks1[i][j].y && bally + dy <= bricks1[i][j].y + 90 + ballradius) {
+                                    dx = -dx;
+                                    countscore(i, j);
+                                }
+                            }
+                            else if (dx < 0 && dy > 0) {
+                                if (ballx + dx - ballradius >= bricks1[i][j].x && ballx + dx - ballradius <= bricks1[i][j].x + 20 && bally + dy + ballradius >= bricks1[i][j].y && bally + dy + ballradius <= bricks1[i][j].y + 90) {
+                                    dx = -dx;
+                                    countscore(i, j);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        function countscore(i, j) {
+            bricks1[i][j].count--;
+            score++;
+            if (score == 48) {
+                document.getElementById('next').style.display = "block";
+                dx = 0;
+                dy = 0;
+            }
+        }
+        function checkcollision2() {
+            for (var i = 0; i < 5; i++) {
+                for (var j = 0; j < 4; j++) {
+                    if (bricks2[i][j].count == 1) {
+                        if (ballx >= bricks2[i][j].x && ballx <= bricks2[i][j].x + 100 && bally >= bricks2[i][j].y && bally <= bricks2[i][j].y + 20) {
+                            dy = -dy;
+                            bricks2[i][j].count = 0;
+                            score++;
+                            if (score == 48) {
+                                document.getElementById('next').style.display = "block";
+                                dx = 0;
+                                dy = 0;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        function drawball() {
+            ctx.beginPath();
+            ctx.arc(ballx, bally, ballradius, 0, 2 * Math.PI);
+            ctx.fillStyle = "blue";
+            ctx.fill();
+            ctx.closePath();
+        }
+        function ballimit() {
+            if (ballx + dx >= canvas.width - ballradius || ballx + dx <= ballradius)
+                dx = -dx;
+            if (bally + dy >= canvas.height - ballradius) {
+                if (ballx >= playerx && ballx <= playerx + 120)
+                    dy = -dy;
+                else {
+                    life--;
+                    ballx = 300;
+                    bally = 370;
+                    playerx = 240;
+                    playery = 380;
+                    dx = 0;
+                    dy = 0;
+                    mov = 0;
+                    key = 0;
+                }
+            }
+            else if (bally + dy <= ballradius)
+                dy = -dy;
+            ballx += dx;
+            bally += dy;//以上是移動球
+        }
+        function drawplayer() {
+            ctx.beginPath();
+            ctx.rect(playerx, playery, playerwidth, 20);
+            ctx.fillStyle = "green";
+            ctx.fill();
+            ctx.closePath();
+        }
+        function playerlimit() {
+            if (pressright && playerx < canvas.width - playerwidth) {
+                playerx += 5;
+            }
+            else if (pressleft && playerx > 0) {
+                playerx -= 5;
+            }
+        }
+        function drawball2() {
+            ctx.beginPath();
+            ctx.arc(ballx, bally, ballradius, 0, 2 * Math.PI);
+            ctx.fillStyle = "blue";
+            ctx.fill();
+            ctx.closePath();
+            if (pressright && ballx <= 540) {
+                ballx += 5;
+            }
+            else if (pressleft && ballx >= 60) {
+                ballx -= 5;
+            }
+        }
+        function update() {
+            ctx.clearRect(0, 0, 600, 400);
+            if (mov == 1) {
+                drawball();
+                ballimit()
+            }
+            else
+                drawball2()
+            drawplayer();
+            playerlimit();
+            level2scene1();
+            level2scene2();
+            checkcollision1();
+            checkcollision2();
+            document.getElementById('life').innerHTML = '生命:' + life;
+            document.getElementById('score').innerHTML = '目前分數:' + score;
+            if (score == 48) {
+                ctx.font = "80px Arial";
+                ctx.fillStyle = "deepskyblue";
+                ctx.fillText("you win ", 160, 150);
+            }
+            if (life == 0 || t <= 0) {
+                ctx.font = "80px Arial";
+                ctx.fillStyle = "deepskyblue";
+                ctx.fillText("you lose ", 160, 150);
+                document.getElementById('restart').style.display = "block";
+                document.getElementById('leave').style.display = "block";
+                t = 0;
+                dx = 0;
+                dy = 0;
+            }
+        }
+        function keydownhandle(e) {
+            if (life > 0 && t > 0) {
+                if (e.keyCode == 32 && key == 0) {
+                    dx = 2;
+                    dy = -2;
+                    mov = 1;
+                    key = 1;
+                }
+                else if (e.keyCode == 39)
+                    pressright = true;
+                else if (e.keyCode == 37)
+                    pressleft = true;
+            }
+        }
+        function keyduphandle(e) {
+            if (e.keyCode == 39)
+                pressright = false;
+            else if (e.keyCode == 37)
+                pressleft = false;
+        }
+        function countdown() {
+            t--;
+            document.getElementById('timing').innerHTML = '時間:' + t;
+            if (t == 0)
+                clearInterval(down);
+        }
+        setInterval(update, 10);
+        var down = setInterval(countdown, 1000);
+        document.addEventListener("keydown", keydownhandle, false);
+        document.addEventListener("keyup", keyduphandle, false);
+    </script>
+</body>
+</html>

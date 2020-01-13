@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <!--4105056019 許睦昆 第二次作業 4/10-->
+    <!--參考至中興大學學校歷史網站(英文版)-->
+    <meta charset="utf-8" />
+    <title>History</title>
+    <style type="text/css">
+        h1 {
+            color: burlywood;
+            -webkit-text-stroke: 2px black;
+        }
+
+        .thick {
+            border-width: thick;
+            border-width: 2px;
+            border-style: dashed;
+            border-color: coral
+        }
+
+        .medium {
+            border-width: medium;
+            border-width: 2px;
+            border-style: dotted;
+            border-color: coral
+        }
+
+        .thin {
+            border-width: thin;
+            border-width: 2px;
+            border-style: double;
+            border-color: coral
+        }
+
+        #div {
+            width: 50%;
+            height: 500px;
+            overflow: scroll;
+        }
+
+        #img {
+            position: absolute;
+            top: 30%;
+            left: 60%;
+        }
+
+        body {
+            background-color: antiquewhite;
+        }
+
+        img {
+            -webkit-transition: -webkit-transform 4s;
+            -webkit-transition-timing-function: ease;
+            transition: transform 4s;
+            transition-timing-function: ease;
+        }
+
+            img:hover {
+                -webkit-transform: rotate(360deg) scale(1,2);
+                transform: rotate(360deg) scale(1,2);
+            }
+    </style>
+</head>
+<body>
+    <a href="Home.html">Home</a>
+    <a href="學校歷史(中).html">中文版</a>
+    <h1>History</h1>
+    <hr />
+    <div id="div">
+        <p class="thick">
+            National Chung Hsing University has undergone a number of significant stages of change. It began as the Advanced Academy of Agronomy and Forestry, founded by the Japanese in Taipei in 1919. After 1928, the Academy became a special department affiliated to Taihoku Imperial University (now National Taiwan University). However, the department became an independent school again in 1943, and was moved to Taichung.
+        </p>
+        <p class="medium">
+            After the Restoration of Taiwan in 1945, the school was reorganized and renamed Taiwan Provincial Taichung Agricultural Junior College. In 1946, the Junior College evolved into a higher institution, Taiwan Provincial College of Agriculture. Then in 1961, it combined with the newly-established College of Science and Engineering on the same Taichung campus and the College of Law and Business founded in Taipei in 1949, to become Taiwan Provincial Chung Hsing University. In 1964, an Evening School was set up on the Taipei Campus. In 1968 another Evening School and the College of Liberal Arts were added to the Taichung Campus. The University continued to grow in size, and in 1971 it became a national university, and assumed its present name: National Chung Hsing University (NCHU).
+        </p>
+        <p class="thin">
+            The College of Veterinary Medicine was established in September 1999. In February 2000, the Taipei Campus including the College of Law & Business and Taipei Evening School was combined into the newly established National Taipei University. The College of Social Sciences & Management was established on Taichung Campus at the same time. In August 2002, the Extension Division and the Extension Education Center were combined into the Extension Division for In-service and Continuing Education.
+        </p>
+    </div>
+    <aside>
+        <img src="圖片/簡史(英).jpg" alt="簡史(英)" id="img"/>
+    </aside>
+</body>
+</html>

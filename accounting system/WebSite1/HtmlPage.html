@@ -1,0 +1,513 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <!--/***************************
+    4105056019 許睦昆 第五次作業5/18
+    ***************************/-->
+    <meta charset="utf-8" />
+    <title>財務資訊系統</title>
+</head>
+<body>
+    <script>
+        keys = [];
+        var cmn = 0;
+        function cleardata() {
+            for (var i = 0; i < length; i++) {
+                keys[i] = null;
+            }
+            localStorage.clear();
+            loadaccount(" ");
+            re();
+        }
+        function money() {
+            cmn = 1;
+            var companyname = document.getElementById("companyname");
+            if (companyname.value == "") {
+                window.alert("請輸入公司名稱");
+                return;
+            }
+            else {
+                var assest = document.getElementById("assets");
+                var ck = check(assest.value);
+                var liabilities = document.getElementById("liabilities");
+                var ck1 = check(liabilities.value);
+                if (ck == 1 || ck1 == 1)
+                    return;
+                document.getElementById("company").style.display = "none";
+                document.getElementById("restart").style.display = "block";
+            }
+            var firstring = "a" + companyname.value;
+            var lastring = companyname.value + " " + assest.value + " " + liabilities.value;
+            setitem(firstring, lastring);
+            loadaccount("m");
+        }
+        function re() {
+            cmn = 0;
+            document.getElementById("company").style.display = "block";
+            document.getElementById("restart").style.display = "none";
+
+        }
+        function receive() {
+            var companyname = document.getElementById("companyname");
+            if (companyname.value == "" || cmn == 0) {
+                window.alert("請輸入公司名稱");
+                return;
+            }
+            var productname = document.getElementById("productname");
+            var num = document.getElementById("number");
+            var ck = check(num.value);
+            var year = document.getElementById("companyrevenueyear");
+            var ck1 = check(year.value);
+            var month = document.getElementById("companyrevenuemonth");
+            var ck2 = checkmonth(month.value);
+            var day = document.getElementById("companyrevenueday");
+            var ck3 = checkday(day.value);
+            var price = document.getElementById("productprice");
+            var ck4 = check(price.value);
+            if (ck == 1 || ck1 == 1 || ck2 == 1 || ck3 == 1 || ck4 == 1)
+                return;
+            var recordate = year.value + month.value + day.value;
+            var firstring = "b" + recordate + companyname.value + productname.value;
+            var lastring = companyname.value + " " + productname.value + " " + num.value + " " + year.value +" "+ month.value+" " + day.value + " " + price.value;
+            setitem(firstring, lastring);
+            loadaccount("r");
+        }
+        function pay1() {
+            var companyname = document.getElementById("companyname");
+            if (companyname.value == "" || cmn == 0) {
+                window.alert("請輸入公司名稱");
+                return;
+            }
+            var name = document.getElementById("salaryname");
+            var year = document.getElementById("companysalaryyear");
+            var ck1 = check(year.value);
+            var month = document.getElementById("companysalarymonth");
+            var ck2 = checkmonth(month.value);
+            var day = document.getElementById("companysalaryday");
+            var ck3 = checkday(day.value);
+            var salary = document.getElementById("salary");
+            var ck4 = check(salary.value);
+            if (ck1 == 1 || ck2 == 1 || ck3 == 1 || ck4 == 1 )
+                return;
+            var recordate = year.value + month.value + day.value;
+            var firstring = "c" + recordate + companyname.value + name.value;
+            var lastring = companyname.value + " " + name.value + " " + year.value + " " + month.value + " " + day.value + " " + salary.value;
+            setitem(firstring, lastring);
+            loadaccount("p1");
+        }
+        function pay2() {
+            var companyname = document.getElementById("companyname");
+            if (companyname.value == "" || cmn == 0) {
+                window.alert("請輸入公司名稱");
+                return;
+            }
+            var name = document.getElementById("materialname");
+            var num = document.getElementById("materialnum");
+            var ck = check(num.value);
+            var year = document.getElementById("companymaterialyear");
+            var ck1 = check(year.value);
+            var month = document.getElementById("companymaterialmonth");
+            var ck2 = checkmonth(month.value);
+            var day = document.getElementById("companymaterialday");
+            var ck3 = checkday(day.value);
+            var price = document.getElementById("material");
+            var ck4 = check(price.value);
+            if (ck == 1 || ck1 == 1 || ck2 == 1 || ck3 == 1 || ck4 == 1)
+                return;
+            var recordate = year.value + month.value + day.value;
+            var firstring = "d" + recordate + companyname.value + name.value;
+            var lastring = companyname.value + " " + name.value + " " + num.value + " " + year.value + " " + month.value + " " + day.value + " " + price.value;
+            setitem(firstring, lastring);
+            loadaccount("p2");
+        }
+        function check(num) {
+            if (isNaN((Number(num))) === true || Number(num) < 0) {
+                window.alert("請輸入大於等於0的數字");
+                return 1;
+            }
+            return 0;
+        }
+        function checkmonth(num) {
+            if (num == "")
+                return 0;
+            if (isNaN((Number(num))) === true || Number(num) <= 0 || Number(num) >12) {
+                window.alert("請輸入正確月份");
+                return 1;
+            }
+            return 0;
+        }
+        function checkday(num) {
+            if (num == "")
+                return 0;
+            if (isNaN((Number(num))) === true || Number(num) <= 0 || Number(num) > 31) {
+                window.alert("請輸入正確天數");
+                return 1;
+            }
+            return 0;
+        }
+        function setitem(key, value) {
+            localStorage.setItem(key, value);
+            sessionStorage.setItem(key, value);
+        }
+        function loadaccount(index) {
+            var length = localStorage.length;
+            for (var i = 0; i < length; i++) {
+                keys[i] = localStorage.key(i);
+            }
+            sortkeys(keys, length);
+            if (index == "m") {
+                printmoney(keys, length);
+                sortkeys(keys, length);
+            }
+            else if (index == "r") {
+                printrecive(keys, length);
+                sortkeys(keys, length);
+            }
+            else if (index == "p1") {
+                printpay1(keys, length);
+                sortkeys(keys, length);
+            }
+            else if (index == "p2") {
+                printpay2(keys, length);
+                sortkeys(keys, length);
+            }
+            else if (!sessionStorage.getItem("herepreviously")) {
+                printmoney(keys, length);
+                sortkeys(keys, length);
+                printrecive(keys, length);
+                sortkeys(keys, length);
+                printpay1(keys, length);
+                sortkeys(keys, length);
+                printpay2(keys, length);
+            }
+            sortkeys(keys, length);
+            allset(keys, length);
+            length = localStorage.length;
+            for (var i = 0; i < length; i++) {
+                keys[i] = localStorage.key(i);
+            }
+            sortkeys(keys, length);
+            allsort(keys, length);
+            printall(keys, length);
+            setstyle();
+        }
+        function sortkeys(keys, length) {
+            var chr, chr2;
+            for (var i = 0; i < length; i++) {
+                for (var j = i; j > 0; j--) {
+                    chr = keys[j].split("");
+                    chr2 = keys[j - 1].split("");
+                    var k = 0;
+                    while (chr[k] == chr2[k])
+                        k++;
+                    if (chr[k] < chr2[k]) {
+                        var temp = keys[j];
+                        keys[j] = keys[j - 1];
+                        keys[j - 1] = temp;
+                    }
+                }
+            }
+        }
+        function printmoney(keys, length) {
+            moneysort(keys, length);
+            var chr;
+            var dv1 = document.getElementById("d1");
+            dv1.innerHTML = "<table border='1'><thead><tr><th>公司名稱</th><th>資產</th><th>負債</th></tr></thead><tbody id='td1'>";
+            for (var i = 0; i < length; i++) {
+                chr = keys[i].split("");
+                if (chr[0] == "a") {
+                    value = localStorage.getItem(keys[i]).split(" ");
+                    document.getElementById("td1").innerHTML += "<tr><td>" + value[0] + "</td><td>" + value[1] + "</td><td>" + value[2] + "</td></tr>";
+                }
+            }
+            dv1.innerHTML += "</tbody></table>";
+        }
+        function moneysort(keys, length) {
+            var chr, last, pre;
+            for (var i = 0; i < length; i++) {
+                chr = keys[i].split("");
+                if (chr[0] == "a") {
+                    for (var j = i; j > 0; j--) {
+                        last = select(j);
+                        pre = select(j - 1);
+                        if (last < pre) {
+                            var temp = keys[j];
+                            keys[j] = keys[j - 1];
+                            keys[j - 1] = temp;
+                        }
+                    }
+                }
+            }
+        }
+        function select(j) {
+            var value = localStorage.getItem(keys[j]).split(" ");
+            var num = Number(value[1]);
+            return num;
+        }
+        function printrecive(keys, length) {
+            recivesort(keys, length);
+            var chr;
+            var dv2 = document.getElementById("d2");
+            dv2.innerHTML = "<table border='1'><thead><tr><th>公司名稱</th><th>產品名稱</th><th>產品數量</th><th>紀錄日期</th><th>產品價格</th></tr></thead><tbody id='td2'>";
+            for (var i = 0; i < length; i++) {
+                chr = keys[i].split("");
+                if (chr[0] == "b") {
+                    value = localStorage.getItem(keys[i]).split(" ");
+                    document.getElementById("td2").innerHTML += "<tr><td>" + value[0] + "</td><td>" + value[1] + "</td><td>" + value[2] + "</td><td>" + value[3] + "-" + value[4] + "-" + value[5] + "</td><td>" + value[6] + "</td></tr>";
+                }
+            }
+            dv2.innerHTML += "</tbody></table>";
+        }
+        function recivesort(keys, length) {
+            var chr, last, pre;
+            for (var i = 0; i < length; i++) {
+                chr = keys[i].split("");
+                if (chr[0] == "b") {
+                    for (var j = i; j > 0; j--) {
+                        var k = 3;
+                         do{
+                            last = selectcom(j,k);
+                             pre = selectcom(j - 1, k);
+                             k++;
+                        } while (last==pre&&k<6);
+                        if (last < pre) {
+                            var temp = keys[j];
+                            keys[j] = keys[j - 1];
+                            keys[j - 1] = temp;
+                        }
+                    }
+                }
+            }
+        }
+        function selectcom(j,k) {
+            var value = localStorage.getItem(keys[j]).split(" ");
+            var num = Number(value[k]);
+            return num;
+        }
+        function printpay1(keys, length) {
+            pay1sort(keys, length);
+            var chr;
+            var dv3 = document.getElementById("d3");
+            dv3.innerHTML = "<table border='1'><thead><tr><th>公司名稱</th><th>名稱</th><th>紀錄日期</th><th>員工薪水</th></tr></thead><tbody id='td3'>";
+            for (var i = 0; i < length; i++) {
+                chr = keys[i].split("");
+                if (chr[0] == "c") {
+                    value = localStorage.getItem(keys[i]).split(" ");
+                    document.getElementById("td3").innerHTML += "<tr><td>" + value[0] + "</td><td>" + value[1] + "</td><td>" + value[2] + "-" + value[3] + "-" + value[4] + "</td><td>" + value[5] + "</td></tr>";
+                }
+            }
+            dv3.innerHTML += "</tbody></table>";
+        }
+        function pay1sort(keys, length) {
+            var chr, last, pre;
+            for (var i = 0; i < length; i++) {
+                chr = keys[i].split("");
+                if (chr[0] == "c") {
+                    for (var j = i; j > 0; j--) {
+                        var k = 2;
+                        do {
+                            last = selectcom(j, k);
+                            pre = selectcom(j - 1, k);
+                            k++;
+                        } while (last == pre && k < 5);
+                        if (last < pre) {
+                            var temp = keys[j];
+                            keys[j] = keys[j - 1];
+                            keys[j - 1] = temp;
+                        }
+                    }
+                }
+            }
+        }
+        function printpay2(keys, length) {
+            pay1sort(keys, length);
+            var chr;
+            var dv4 = document.getElementById("d4");
+            dv4.innerHTML = "<table border='1'><thead><tr><th>公司名稱</th><th>材料名稱</th><th>材料數量</th><th>紀錄日期</th><th>材料價格</th></tr></thead><tbody id='td4'>";
+            for (var i = 0; i < length; i++) {
+                chr = keys[i].split("");
+                if (chr[0] == "d") {
+                    value = localStorage.getItem(keys[i]).split(" ");
+                    document.getElementById("td4").innerHTML += "<tr><td>" + value[0] + "</td><td>" + value[1] + "</td><td>" + value[2] + "</td><td>" + value[3] + "-" + value[4] + "-" + value[5] + "</td><td>" + value[6] + "</td></tr>";
+                }
+            }
+            dv4.innerHTML += "</tbody></table>";
+        }
+        function pay2sort(keys, length) {
+            var chr, last, pre;
+            for (var i = 0; i < length; i++) {
+                chr = keys[i].split("");
+                if (chr[0] == "d") {
+                    for (var j = i; j > 0; j--) {
+                        var k = 3;
+                        do {
+                            last = selectcom(j, k);
+                            pre = selectcom(j - 1, k);
+                            k++;
+                        } while (last == pre && k < 6);
+                        if (last < pre) {
+                            var temp = keys[j];
+                            keys[j] = keys[j - 1];
+                            keys[j - 1] = temp;
+                        }
+                    }
+                }
+            }
+        }
+        function allset(keys, length) {
+            var chr, chr2;
+            var ass, liab;
+            var bnum = 0, cnum = 0, dnum = 0;
+            for (var i = 0; i < length; i++) {
+                chr = keys[i].split("");
+                if (chr[0] == "a") {
+                    value = localStorage.getItem(keys[i]).split(" ");
+                    for (var j = i + 1; j < length; j++) {
+                        chr2 = keys[j].split("");
+                        if (chr2[0] == "b") {
+                            value2 = localStorage.getItem(keys[j]).split(" ");
+                            if (value[0] == value2[0])
+                                bnum += Number(value2[2]) * Number(value2[6]);
+                        }
+                        else if (chr2[0] == "c") {
+                            value2 = localStorage.getItem(keys[j]).split(" ");
+                            if (value[0] == value2[0])
+                                cnum += Number(value2[5]);
+                        }
+                        else if (chr2[0] == "d") {
+                            value2 = localStorage.getItem(keys[j]).split(" ");
+                            if (value[0] == value2[0])
+                                dnum += Number(value2[2]) * Number(value2[6]);
+                        }
+                    }
+                    if (value[1] == "")
+                        ass = 0;
+                    else
+                        ass = Number(value[1]);
+                    if (value[2] == "")
+                        liab = 0;
+                    else
+                        liab = Number(value[2]);
+                    var firstring;
+                    var lastring;
+                    firstring = "e" + value[0];
+                    lastring = value[0] + " " + ass + " " + liab + " " + bnum + " " + (cnum + dnum) + " " + (Number(value[1]) - Number(value[2]) + bnum - (cnum + dnum));
+                    setitem(firstring, lastring);
+                    bnum = 0, cnum = 0, dnum = 0;
+                }
+            }
+        }
+        function allsort(keys, length) {
+            var chr, last, pre;
+            for (var i = 0; i < length; i++) {
+                chr = keys[i].split("");
+                if (chr[0] == "e") {
+                    for (var j = i; j > 0; j--) {
+                        last = selectall(j);
+                        pre = selectall(j - 1);
+                        if (last < pre) {
+                            var temp = keys[j];
+                            keys[j] = keys[j - 1];
+                            keys[j - 1] = temp;
+                        }
+                    }
+                }
+            }
+        }
+        function selectall(j) {
+            var value = localStorage.getItem(keys[j]).split(" ");
+            var num = Number(value[5]);
+            return num;
+        }
+        function printall(keys, length) {
+            var chr;
+            var dv5 = document.getElementById("d5");
+            dv5.innerHTML = "<h2 style='color:crimson;margin-top:0px;'>總帳</h2><table border='1' style='margin-top:-15px;'><thead><tr><th>公司名稱</th><th>資產</th><th>負債</th><th>收入</th><th>支出</th><th>淨資產</th></tr></thead><tbody id='td5'>";
+            for (var i = 0; i < length; i++) {
+                chr = keys[i].split("");
+                if (chr[0] == "e") {
+                    value = localStorage.getItem(keys[i]).split(" ");
+                    document.getElementById("td5").innerHTML += "<tr><td>" + value[0] + "</td><td>" + value[1] + "</td><td>" + value[2] + "</td><td>" + value[3] + "</td><td>" + value[4] + "</td><td>" + value[5] + "</td></tr>";
+                }
+            }
+            dv5.innerHTML += "</tbody></table>";
+        }
+        function begin() {
+            document.body.innerHTML = "<h1>歡迎來到財務資訊系統</h1>" +
+                "<form id = 'company'>" +
+                "<h3>公司資產</h3>" +
+                "公司名: <input type='text' placeholder='請輸入公司名稱' id='companyname' />" +
+                "財產: <input type='text' placeholder='請輸入公司資產(數字)' id='assets' />" +
+                "負債: <input type='text' placeholder='請輸入公司負債(數字)' id='liabilities' />" +
+                "<input type='button' value='save' id='saveButtonmoney' onclick='money()' />" +
+                "</form >" +
+                " <form id='restart'>" +
+                "<input type='button' value='更改/加入(新)公司資產' onclick='re()' />" +
+                " </form>" +
+                "<div id='d1'>" +
+                " </div>" +
+                "<form>" +
+                " <h3>公司收入</h3>" +
+                "產品名稱:<input type='text' placeholder='請輸入產品名稱' id='productname' />" +
+                "數量:<input type='text' placeholder='請輸入產品數量(數字)' id='number' />" +
+                "紀錄日期:<input type='text' placeholder='請輸入西元' id='companyrevenueyear' />年" +
+                "<input type='text' placeholder='請輸入月分' id='companyrevenuemonth' />月" +
+                "<input type='text' placeholder='請輸入日期' id='companyrevenueday' />日</br>" +
+                "產品價格:<input type='text' placeholder='請輸入產品價格(數字)' id='productprice' />" +
+                "<input type='button' value='save' id='saveButtonrevenue' onclick='receive()' />" +
+                "</form>" +
+                "<div id='d2'>" +
+                " </div>" +
+                "<form>" +
+                "<h3>公司支出1</h3>" +
+                "員工名稱:<input type='text' placeholder='請輸入名稱' id='salaryname' />" +
+                "紀錄日期:<input type='text' placeholder='請輸入西元' id='companysalaryyear' />年" +
+                "<input type='text' placeholder='請輸入月分' id='companysalarymonth' />月" +
+                "<input type='text' placeholder='請輸入日期' id='companysalaryday' />日</br>" +
+                "員工薪水:<input type='text' placeholder='請輸入員工薪水(數字)' id='salary' />" +
+                "<input type='button' value='save' id='saveButtonsalary' onclick='pay1()' />" +
+                "</form>" +
+                "<div id='d3'>" +
+                " </div>" +
+                "<form>" +
+                "<h3>公司支出2</h3>" +
+                "材料名稱:<input type='text' placeholder='請輸入材料名稱' id='materialname' />" +
+                "數量:<input type='text' placeholder='請輸入材料數量(數字)' id='materialnum' />" +
+                "紀錄日期:<input type='text' placeholder='請輸入西元' id='companymaterialyear' />年" +
+                "<input type='text' placeholder='請輸入月分' id='companymaterialmonth' />月" +
+                "<input type='text' placeholder='請輸入日期' id='companymaterialday' />日</br>" +
+                "材料價格:<input type='text' placeholder='請輸入材料價格(數字)' id='material' />" +
+                "<input type='button' value='save' id='saveButtonmaterial' onclick='pay2()' />" +
+                "</form>" +
+                "<div id='d4'>" +
+                " </div>" +
+                "<div id='d6'>" +
+                "<hr>" +
+                "<div id='d5'>" +
+                " </div>" +
+                "<form>" +
+                " <input type='button' value='清除所有資料' id='clearall' onclick='cleardata()'/>" +
+                "</form>"
+            "</div>";
+            document.body.style.backgroundColor = "antiquewhite";
+            document.getElementById("restart").style.display = "none";
+            document.getElementById("d6").style.backgroundColor = "burlywood";
+            document.getElementsByTagName("h1")[0].style.color = "slategray";
+            var h3 = document.getElementsByTagName("h3");
+            for (var i = 0; i < h3.length; i++) {
+                h3[i].style.color = "blueviolet";
+            }
+            loadaccount(" ");
+        }
+        function setstyle() {
+            var t = document.getElementsByTagName("table");
+            for (var i = 0; i < t.length; i++) {
+                t[i].style.borderCollapse = "Collapse";
+                t[i].style.color = "darkslategray";
+                t[i].style.width = "550px";
+            }
+        }
+            window.addEventListener("load", begin);
+    </script>
+</body>
+</html>

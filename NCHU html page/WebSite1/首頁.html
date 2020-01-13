@@ -1,0 +1,241 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <!--4105056019 許睦昆 第二次作業 4/10-->
+    <!--參考至中興大學首頁和學校發展重點-->
+    <meta charset="utf-8" />
+    <meta name="author" content="許睦昆" />
+    <meta name="keywords" content="中興大學" />
+    <meta name="description" content="中興大學的網站" />
+    <title>首頁</title>
+    <style type="text/css">
+        span ol {
+            display: none;
+        }
+        /*display:none代表不顯示*/
+        h1 {
+            color: gold;
+            text-align: center;
+        }
+
+        .col {
+            color: blue;
+        }
+
+        ul {
+            font-family: 'Engravers MT';
+            color: crimson;
+        }
+
+        a {
+            font-family: 'AR CENA';
+            color: dimgray;
+            text-decoration: none;
+        }
+
+            a:hover {
+                text-decoration: underline;
+            }
+
+        ul {
+            display: flex;
+        }
+
+        #wi {
+            width: 220px;
+        }
+
+        span:hover ol {
+            display: block;
+        }
+
+        span ol li {
+            border: 2px solid royalblue;
+            background-color: white;
+            width: 10em;
+            color: black;
+        }
+
+            span ol li:hover {
+                background-color: aquamarine;
+            }
+
+        #pos1 {
+            position: absolute;
+            z-index: 2;
+            top: 100px;
+        }
+
+        #pos2 {
+            position: absolute;
+            z-index: 1;
+            top: 115px;
+        }
+
+        #pos3 {
+            position: absolute;
+            z-index: 1;
+            top: 395px;
+        }
+
+        .inline {
+            display: inline;
+        }
+
+        .enter {
+            font-size: 0.5em;
+        }
+
+        .form1 {
+            position: absolute;
+            left: 550px;
+            top: 0px;
+            margin-top: -60px
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .buttonpos {
+            margin-top: 40px;
+            //display:inline-flex;
+            display: none;
+        }
+
+        .inputpos {
+            position: relative;
+            left: 60px;
+            display: inline-flex
+        }
+
+        .stupos {
+            position: relative;
+            top: 55px;
+            color: blue;
+        }
+
+        .ulpos {
+            position: relative;
+            top: -40px;
+        }
+
+        header {
+            background-color: dodgerblue;
+        }
+
+        body {
+            background-color: antiquewhite;
+            margin: 0px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <p id="top" class="inline">top</p>
+        <strong><a href="Home.html" >英文版</a></strong>
+        <a href="#重點">學校發展重點</a>
+        <a href="#密碼">忘記密碼</a>
+        <h1>中興大學首頁</h1>
+        <div class="form1">
+            <h6 id="st" class="col stupos">學生登錄</h6>
+            <form method="get" action="Home.html" class="flex">
+                <p class="enter inputpos">帳號:</p>
+                <p>
+                    <input type="text" required autocomplete="on" autofocus class="enter inputpos" />
+                </p>
+                <p class="enter inputpos">密碼:</p>
+                <p>
+                    <input type="password" required class="enter inputpos" />
+                </p>
+                <input type="submit" value="確認" class="enter buttonpos" style="height:20px" />
+                <input type="reset" value="取消" class="enter buttonpos" style="height:20px"/>
+            </form>
+        </div>
+        <hr />
+    </header>
+    <section id="pos1">
+        <nav>
+            <ul class="ulpos">
+                <span>
+                    <li id="wi"><h5>關於興大</h5></li>
+                    <ol>
+                        <li><a href="學校歷史(中).html">簡史</a></li>
+                        <li><a href="學校校徽(中).html">學校校徽</a></li>
+                    </ol>
+                </span>
+                <span>
+                    <li id="wi"><h5>行政</h5></li>
+                    <ol>
+                        <li><a href="學務處(中).html">學務處</a></li>
+                        <li><a href="教務處(中).html">教務處</a></li>
+                    </ol>
+                </span>
+                <span>
+                    <li id="wi"><h5>學院</h5></li>
+                    <ol>
+                        <li><a href="文學院(中).html">文學院</a></li>
+                        <li><a href="農資學院(中).html">農資學院</a></li>
+                        <li><a href="理學院(中).html">理學院</a></li>
+                        <li><a href="工學院(中).html">工學院</a></li>
+                        <li><a href="生命科學院(中).html">生命科學學院</a></li>
+                        <li><a href="獸醫學院(中).html">獸醫學院</a></li>
+                        <li><a href="管理學院(中).html">管理學院</a></li>
+                        <li><a href="法政學院(中).html">法政學院</a></li>
+                        <li><a href="創新產業暨國際學院.html">創新產業暨國際學院</a></li>
+                    </ol>
+                </span>
+                <span>
+                    <li id="wi"><h5>地圖</h5></li>
+                    <ol>
+                        <li><a href="交通方式(中).html">交通方式</a></li>
+                        <li><a href="校區配置圖(中).html">校園配置</a></li>
+                    </ol>
+                </span>
+            </ul>
+        </nav>
+    </section>
+    <section id="pos2">
+        <hr />
+        <article>
+            <h4 id="重點" class="col">學校發展重點</h4>
+            <p>本校創校至今即將邁入百年，是國內歷史最悠久，第三大研究型綜合國立大學，設有八大學院，系所完備，培育學生專業知能、反思創新、團隊合作、在地關懷、全球思維等基本素養與核心能力。</p>
+            <p>
+                本校以頂尖研究中心為平台，整合校內外教學研究資源規劃跨領域菁英人才培育，促進國際交流提升國際聲譽，推動產學合作，並與國際頂尖大學組成跨國研究團隊建立實質合作關係，帶動全校整體提升。
+            </p>
+            <p>
+                為達成本校教育目標及實現學校願景，本校校務發展重點如下：「培育全人發展青年」、「教學品質精進」、「學術研究提昇」、「推動國際化」、「校園建設與環境」、「產官學合作」、「強化推廣服務」、「強化校友經營」、「人文藝術與文化資產」、「行政革新與組織調整」，詳見104至109學年度中程校務發展計畫書。
+            </p>
+            <a href="#top">return top</a>
+        </article>
+        <hr />
+    </section>
+    <section id="pos3">
+        <footer>
+            <h6 id="密碼" class="col">忘記密碼</h6>
+            <form method="post" action="Home.html">
+                <p>帳號:</p>
+                <p>
+                    <input type="text" required autocomplete="on" autofocus />
+                </p>
+                <p>出生年月</p>
+                <input type="month" required />
+                <p>年級</p>
+                <input type="number" min="1" max="5" step="1" value="1" />
+                <p>目前周次</p>
+                <input type="week" required />
+                <p>現在時間</p>
+                <input type="time" required />
+                <input type="submit" value="確認" formnovalidate />
+                <input type="reset" value="取消" />
+            </form>
+            <a href="#top">return top</a>
+            <h6>以上為中興大學首頁目錄</h6>
+            <details>
+                <summary>&copy;&nbsp;中興大學</summary>
+                <p>by許睦昆</p>
+            </details>
+        </footer>
+    </section>
+</body>
+</html>
