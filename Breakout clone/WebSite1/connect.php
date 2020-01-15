@@ -4,7 +4,7 @@
     ***************************/
 $host='localhost';
 $dbuser='root';
-$dbpw='xzzxben31817';
+$dbpw='xxxxxxxxxxxx';
 $dbname='my_db';
 $link=mysqli_connect($host,$dbuser,$dbpw,$dbname);
 if($link){
